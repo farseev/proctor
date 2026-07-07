@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proctor · Paid Media Review — Constructor Tech</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#00204D; --ink:#141414; --white:#FFFFFF;
+    --red:#EB1700; --sky:#00B2FF; --mint:#00D19E; --gold:#FFC700;
+    --blue:#1B6CFF; --deepblue:#01388C; --deepblue2:#004381;
+    --card:#F0F2F8; --wash:#F8F9FC;
+    --divider:#DDE1EC; --divider2:#CCD7E8; --border:#E5EBEF;
+    --sec:#676767; --soft:#9FA6AC;
+    --navycard:#143869; --navybody:#CCD7E8;
+    --font:'ALS Hauss','Inter','Helvetica Neue',Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font);color:var(--ink);background:var(--white);line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+
+  .utility{background:var(--wash);border-bottom:1px solid var(--border)}
+  .utility .wrap{display:flex;justify-content:flex-end;align-items:center;height:38px;font-size:12px;font-weight:500;color:var(--sec);letter-spacing:.04em}
+  .utility .globe{width:13px;height:13px;border:1.5px solid var(--sec);border-radius:50%;margin-right:7px;display:inline-block;position:relative}
+  .utility .globe::after{content:"";position:absolute;inset:2px 4px;border-left:1.5px solid var(--sec);border-right:1.5px solid var(--sec);border-radius:50%}
+  nav{background:var(--white);border-bottom:1px solid var(--border)}
+  nav .wrap{display:flex;justify-content:space-between;align-items:center;height:66px}
+  .wordmark{display:flex;align-items:center;font-weight:900;font-size:19px;letter-spacing:-.01em;color:var(--ink)}
+  .wordmark .dev{display:inline-flex;align-items:center;margin:0 1px}
+  .wordmark .chev{color:var(--sky);font-weight:900;transform:translateY(-1px)}
+  .wordmark .dot{width:7px;height:7px;border-radius:50%;background:var(--red);margin:0 3px 0 4px;display:inline-block}
+  .wordmark .grp{color:#8793A8;font-weight:700;margin-left:8px}
+  .navmeta{display:flex;align-items:center;gap:18px;font-weight:500;font-size:13px;color:var(--sec)}
+  .navmeta .pill{background:var(--card);border-radius:999px;padding:6px 14px;color:var(--navy);font-weight:700}
+  .navmeta .pill .sq{color:var(--red)}
+
+  /* Tabs */
+  .tabbar{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--border)}
+  .tabbar .wrap{display:flex;gap:6px;height:58px;align-items:center;overflow-x:auto}
+  .tabbtn{border:none;background:none;font-family:var(--font);font-weight:700;font-size:14px;color:var(--sec);padding:9px 18px;border-radius:999px;cursor:pointer;letter-spacing:-.01em;white-space:nowrap;display:flex;align-items:center;gap:8px}
+  .tabbtn:hover{color:var(--ink);background:var(--wash)}
+  .tabbtn.active{background:var(--navy);color:#fff}
+  .tabbtn .db{width:8px;height:8px;border-radius:50%}
+  .panel{display:none}
+  .panel.active{display:block;animation:fade .35s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  .hero{background:var(--navy);color:#fff;border-radius:30px;padding:52px 56px;margin:26px 0}
+  .eyebrow{font-size:12.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--sky)}
+  .hero h1{font-weight:900;font-size:40px;line-height:1.06;letter-spacing:-.015em;margin:16px 0 18px;max-width:22ch}
+  .hero p.lead{font-weight:400;font-size:17px;line-height:1.55;color:#E7ECF4;max-width:76ch}
+  .hero .period{margin-top:8px;font-size:13px;color:var(--navybody);font-weight:500}
+  .herogrid{display:flex;gap:34px;align-items:center;margin-top:34px;padding-top:30px;border-top:1px solid rgba(255,255,255,.14);flex-wrap:wrap}
+  .scorewrap{display:flex;gap:22px;align-items:center}
+  .ring{position:relative;width:120px;height:120px;flex:none}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .ring .num{font-weight:900;font-size:31px;line-height:1;color:#fff}
+  .ring .den{font-size:11px;color:var(--navybody);margin-top:3px;font-weight:500}
+  .ring .cap{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--sky);font-weight:700;margin-top:5px}
+  .verdicts{display:flex;flex-direction:column;gap:10px}
+  .vpill{display:flex;align-items:center;gap:10px;font-size:13.5px;font-weight:500;color:#EAF0F8}
+  .vpill .tag{font-size:11px;font-weight:700;letter-spacing:.04em;padding:3px 9px;border-radius:999px;text-transform:uppercase}
+  .tag.crit{background:rgba(235,23,0,.16);color:#FF7A66;border:1px solid rgba(235,23,0,.5)}
+  .tag.warn{background:rgba(255,199,0,.15);color:var(--gold);border:1px solid rgba(255,199,0,.45)}
+  .tag.ok{background:rgba(0,209,158,.14);color:var(--mint);border:1px solid rgba(0,209,158,.4)}
+
+  section.blk{margin:52px 0}
+  .kicker{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
+  .h2{font-weight:900;font-size:27px;letter-spacing:-.01em;color:var(--ink);margin:8px 0 4px}
+  .sub{font-size:14.5px;color:var(--sec);max-width:82ch;margin-bottom:24px}
+
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+  .kpi{background:var(--card);border-radius:16px;padding:18px 18px 16px}
+  .kpi .k-l{font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--sec)}
+  .kpi .k-v{font-weight:900;font-size:26px;letter-spacing:-.02em;color:var(--navy);margin-top:8px;line-height:1}
+  .kpi .k-n{font-size:12px;color:var(--sec);margin-top:6px}
+  .kpi.flag{background:#FCEEEC;box-shadow:inset 3px 0 0 var(--red)}
+  .kpi.flag .k-v{color:var(--red)}
+  .kpi.hot{background:#E9FbF5;box-shadow:inset 3px 0 0 var(--mint)}
+  .kpi.hot .k-v{color:#067a5c}
+  .kpi .up{color:var(--red);font-weight:700}
+  .kpi .good{color:#0a8f6c;font-weight:700}
+
+  .funnelcard{background:var(--card);border-radius:20px;padding:30px 32px}
+  .funnel{display:flex;flex-direction:column;gap:0;margin-top:4px}
+  .stage{display:flex;align-items:center;gap:20px;padding:2px 0}
+  .bar{height:56px;border-radius:12px;display:flex;align-items:center;padding:0 22px;color:#fff;position:relative}
+  .s1 .bar{background:var(--navy);width:100%}
+  .s2 .bar{background:var(--deepblue);width:64%}
+  .s3 .bar{background:var(--blue);width:40%}
+  .s4 .bar{background:#B8C2D6;width:26%;color:#3a4763}
+  .bar .b-l{font-weight:700;font-size:14.5px}
+  .bar .b-v{margin-left:auto;font-weight:900;font-size:19px;letter-spacing:-.01em}
+  .stage .meta{min-width:150px;font-size:12.5px;color:var(--sec)}
+  .stage .meta b{color:var(--ink);font-weight:700}
+  .conv{display:flex;align-items:center;gap:8px;padding:5px 0 5px 2px}
+  .conv .arw{color:var(--soft);font-size:13px}
+  .conv .rate{font-size:12.5px;color:var(--sec)}
+  .conv .rate b{color:var(--deepblue);font-weight:800}
+  .fn-note{margin-top:18px;font-size:13px;color:var(--sec);border-top:1px solid var(--divider);padding-top:14px;display:flex;gap:10px;align-items:flex-start}
+  .fn-note .dotmark{width:8px;height:8px;border-radius:50%;background:var(--gold);margin-top:5px;flex:none}
+
+  .findings{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .fcard{border:1px solid var(--divider);border-radius:18px;padding:24px 24px 22px;background:#fff}
+  .fcard .top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:14px}
+  .fcard .name{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+  .fcard .title{font-weight:900;font-size:19px;letter-spacing:-.01em;margin-top:4px;color:var(--ink)}
+  .badge{font-size:11px;font-weight:700;letter-spacing:.04em;padding:4px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+  .b-red{background:#FCEEEC;color:var(--red)}
+  .b-blue{background:#EAF1FF;color:var(--blue)}
+  .b-gold{background:#FFF7DE;color:#9a7900}
+  .b-mint{background:#E4FbF5;color:#067a5c}
+  .acc-red{color:var(--red)} .acc-blue{color:var(--blue)} .acc-gold{color:#9a7900} .acc-mint{color:#067a5c}
+  .fcard ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+  .fcard li{font-size:13.5px;color:#33383e;padding-left:18px;position:relative;line-height:1.45}
+  .fcard li::before{content:"";position:absolute;left:0;top:7px;width:6px;height:6px;border-radius:50%}
+  .fcard.r li::before{background:var(--red)} .fcard.b li::before{background:var(--blue)}
+  .fcard.g li::before{background:var(--gold)} .fcard.m li::before{background:var(--mint)}
+  .fcard li b{color:var(--ink);font-weight:700}
+
+  .tablecard{border:1px solid var(--divider);border-radius:18px;overflow:hidden}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  thead th{background:var(--navy);color:#fff;text-align:left;padding:13px 16px;font-weight:700;font-size:12px;letter-spacing:.03em}
+  thead th.r{text-align:right}
+  tbody td{padding:12px 16px;border-bottom:1px solid var(--border);color:#33383e}
+  tbody td.r{text-align:right;font-variant-numeric:tabular-nums;font-weight:500}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr.win{background:#F3FBF8}
+  tbody tr.tot{background:var(--wash);font-weight:700}
+  tbody tr.tot td{color:var(--ink)}
+  tbody tr.paused td:first-child{color:var(--sec)}
+  .cname{font-weight:700;color:var(--ink)}
+  .fmt{color:var(--sec);font-size:12px}
+  .chip{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px}
+  .chip.hi{background:#FCEEEC;color:var(--red)} .chip.md{background:#FFF7DE;color:#9a7900} .chip.lo{background:#E4FbF5;color:#067a5c}
+  .st{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.03em;padding:2px 7px;border-radius:999px;text-transform:uppercase}
+  .st.on{background:#E4FbF5;color:#067a5c} .st.off{background:#EEF1F6;color:var(--sec)}
+  .tnote{font-size:12px;color:var(--soft);margin-top:10px}
+
+  .split{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+  .scard{background:var(--card);border-radius:16px;padding:20px}
+  .scard h4{font-size:14px;font-weight:900;color:var(--navy);letter-spacing:-.01em}
+  .scard .plc{font-size:11.5px;color:var(--sec);margin-top:2px;margin-bottom:14px}
+  .srow{display:flex;justify-content:space-between;font-size:12.5px;padding:5px 0;border-top:1px solid var(--divider)}
+  .srow:first-of-type{border-top:none}
+  .srow span:first-child{color:var(--sec)}
+  .srow b{font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+  .track{height:7px;background:var(--divider);border-radius:99px;margin-top:4px;overflow:hidden}
+  .track > i{display:block;height:100%;border-radius:99px}
+  .dead{color:var(--red);font-weight:700}
+
+  /* Comparison table */
+  .cmpcard{border:1px solid var(--divider);border-radius:18px;overflow:hidden}
+  .cmp{width:100%;border-collapse:collapse;font-size:13.5px}
+  .cmp thead th{background:var(--navy);color:#fff;text-align:left;padding:14px 18px;font-size:12.5px}
+  .cmp thead th .ch{font-size:11px;font-weight:500;color:var(--navybody);display:block;margin-top:2px}
+  .cmp td{padding:13px 18px;border-bottom:1px solid var(--border);vertical-align:top}
+  .cmp td.lbl{font-weight:700;color:var(--sec);background:var(--wash);width:22%;font-size:12.5px}
+  .cmp tr:last-child td{border-bottom:none}
+  .cmp .mcol b{color:#1b4a8a} .cmp .gcol b{color:#0a7a5c}
+  .cmp b{color:var(--ink);font-weight:700}
+  .cmp small{color:var(--sec);font-weight:400;display:block;font-size:11.5px;margin-top:2px}
+
+  .act{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.04em;padding:3px 8px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+  .act.amp{background:#E4FbF5;color:#067a5c}
+  .act.new{background:#EAF1FF;color:var(--blue)}
+  .act.ops{background:#FFF3E6;color:#b5560a}
+  .act.mon{background:#EEF1F6;color:var(--sec)}
+  .act.inc{background:#FCEEEC;color:var(--red)}
+
+  .rsas{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .rsa{background:var(--card);border-radius:16px;padding:22px;border-top:4px solid var(--sky)}
+  .rsa.b2{border-top-color:var(--mint)} .rsa.b3{border-top-color:var(--gold)}
+  .rsa .rn{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sec)}
+  .rsa .rt{font-weight:900;font-size:17px;color:var(--navy);margin:6px 0 4px;letter-spacing:-.01em}
+  .rsa .chain{font-size:11.5px;color:var(--sec);margin:10px 0;line-height:1.55}
+  .rsa .chain b{color:var(--ink)}
+  .rsa .rwhy{font-size:12.5px;color:#33383e;line-height:1.5;border-top:1px solid var(--divider);padding-top:12px;margin-top:4px}
+
+  .recwrap{background:var(--navy);border-radius:24px;padding:38px 40px;color:#fff}
+  .recwrap .rh{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:6px}
+  .recwrap h3{font-weight:900;font-size:24px;letter-spacing:-.01em}
+  .recwrap .rhs{font-size:13px;color:var(--navybody)}
+  .phase{font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--sky);margin:26px 0 14px}
+  .recs{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .rec{background:var(--navycard);border-radius:14px;padding:20px 20px 18px;border-left:4px solid var(--red)}
+  .rec.b2{border-left-color:var(--sky)} .rec.b3{border-left-color:var(--mint)} .rec.b4{border-left-color:var(--gold)}
+  .rec .rt{font-weight:700;font-size:15px;color:#fff;margin-bottom:7px}
+  .rec .rd{font-size:13px;color:var(--navybody);line-height:1.5}
+  .rec .rd b{color:#fff;font-weight:700}
+  .rec .kpi-tie{display:inline-block;margin-top:10px;font-size:11px;font-weight:700;letter-spacing:.03em;color:var(--sky);text-transform:uppercase}
+
+  footer{background:var(--navy);color:#fff;margin-top:56px;border-radius:30px 30px 0 0}
+  footer .wrap{padding:40px 28px 34px}
+  .foot-top{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap;padding-bottom:22px;border-bottom:1px solid rgba(255,255,255,.14)}
+  .foot-top .wordmark{color:#fff}
+  .foot-top .wordmark .grp{color:#8ea0bd}
+  .method{font-size:11.5px;color:var(--navybody);line-height:1.6;max-width:74ch;margin-top:20px}
+  .method b{color:#fff;font-weight:700}
+  .foot-legal{margin-top:18px;font-size:11px;color:#7f90ad;display:flex;gap:18px;flex-wrap:wrap}
+
+  @media (max-width:900px){
+    .kpis{grid-template-columns:repeat(2,1fr)}
+    .findings,.recs,.rsas{grid-template-columns:1fr}
+    .split{grid-template-columns:1fr}
+    .hero{padding:36px 26px} .hero h1{font-size:29px}
+    .recwrap{padding:26px 22px}
+    .cmp td.lbl{width:34%}
+  }
+</style>
+</head>
+<body>
+
+<div class="utility"><div class="wrap"><span class="globe"></span>EN</div></div>
+
+<nav><div class="wrap">
+  <div class="wordmark">CONSTRUCT<span class="dev"><span class="dot"></span></span>R<span class="chev">&#8250;</span><span class="grp">GROUP</span></div>
+  <div class="navmeta">
+    <span>Constructor Tech</span>
+    <span class="pill"><span class="sq">&#9656;</span> Proctor</span>
+    <span>Paid Media Review</span>
+  </div>
+</div></nav>
+
+<!-- Tab bar -->
+<div class="tabbar"><div class="wrap">
+  <button class="tabbtn active" data-target="p-cross"><span class="db" style="background:var(--red)"></span>Cross-Analysis</button>
+  <button class="tabbtn" data-target="p-meta"><span class="db" style="background:var(--sky)"></span>Meta Ads</button>
+  <button class="tabbtn" data-target="p-google"><span class="db" style="background:var(--mint)"></span>Google Ads</button>
+</div></div>
+
+
+<!-- ============ CROSS-ANALYSIS PANEL ============ -->
+<div class="panel active" id="p-cross"><div class="wrap">
+
+  <section class="hero">
+    <div class="eyebrow">Portfolio view · Meta + Google</div>
+    <h1>Two channels, one pattern: efficient harvest, fragile foundation.</h1>
+    <p class="lead">Across paid social and paid search, Proctor is buying <b style="color:#fff">existing demand cheaply</b> — a warm retargeting pool on Meta and brand-term searchers on Google. Both convert at flattering unit costs. But each channel runs on a single narrative, sits on a single point of failure, and never tests the audience's strongest stories. The efficiency is real; the foundation is thin.</p>
+    <div class="period">Meta window 30 Jun – 6 Jul 2026 (7 days) &nbsp;·&nbsp; Google window 6 Apr – 4 Jul 2026 (90 days) &nbsp;·&nbsp; modelled on real account data</div>
+    <div class="herogrid">
+      <div class="scorewrap">
+        <div class="ring">
+          <svg width="120" height="120" viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="48" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="11"/>
+            <circle cx="60" cy="60" r="48" fill="none" stroke="#00B2FF" stroke-width="11" stroke-linecap="round" stroke-dasharray="301.6" stroke-dashoffset="165.9"/>
+          </svg>
+          <div class="val"><span class="num">45</span><span class="den">/ 100</span><span class="cap">Meta health</span></div>
+        </div>
+        <div class="ring">
+          <svg width="120" height="120" viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="48" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="11"/>
+            <circle cx="60" cy="60" r="48" fill="none" stroke="#00D19E" stroke-width="11" stroke-linecap="round" stroke-dasharray="301.6" stroke-dashoffset="174.9"/>
+          </svg>
+          <div class="val"><span class="num">42</span><span class="den">/ 100</span><span class="cap">Google health</span></div>
+        </div>
+      </div>
+      <div class="verdicts">
+        <div class="vpill"><span class="tag ok">Works</span> Warm/brand demand converts on both channels</div>
+        <div class="vpill"><span class="tag crit">Critical</span> Both single-narrative &amp; single-point-of-failure</div>
+        <div class="vpill"><span class="tag warn">Gap</span> Strongest audience stories untested in paid</div>
+        <div class="vpill"><span class="tag crit">Broken</span> Delivery (Google) &amp; measurement (Meta) both leaking</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk">
+    <div class="kicker">01 · Channel comparison</div>
+    <div class="h2">Meta vs Google, side by side</div>
+    <div class="sub">Different objectives and windows, so figures are shown in parallel — not summed. The shape of the problem is the same on both.</div>
+    <div class="cmpcard"><table class="cmp">
+      <thead><tr><th style="width:22%"></th><th class="mcol">Meta Ads<span class="ch">Paid social · retargeting</span></th><th class="gcol">Google Ads<span class="ch">Paid search · brand</span></th></tr></thead>
+      <tbody>
+        <tr><td class="lbl">Window</td><td class="mcol"><b>7 days</b> <small>30 Jun – 6 Jul</small></td><td class="gcol"><b>90 days</b> <small>6 Apr – 4 Jul</small></td></tr>
+        <tr><td class="lbl">Objective</td><td class="mcol"><b>Traffic / landing-page views</b></td><td class="gcol"><b>Search conversions</b></td></tr>
+        <tr><td class="lbl">Spend</td><td class="mcol"><b>S$34.46</b></td><td class="gcol"><b>S$989.24</b></td></tr>
+        <tr><td class="lbl">Primary result</td><td class="mcol"><b>35 landing-page views</b></td><td class="gcol"><b>553 conversions · S$77.7K value</b></td></tr>
+        <tr><td class="lbl">Efficiency</td><td class="mcol"><b>S$0.98 / LPV</b> <small>warm-pool artefact</small></td><td class="gcol"><b>~78.6&#215; ROAS</b> <small>brand-term inflated</small></td></tr>
+        <tr><td class="lbl">Volume</td><td class="mcol"><b>849 people</b> <small>frequency 17.3</small></td><td class="gcol"><b>21,979 impr · 11,855 clicks</b></td></tr>
+        <tr><td class="lbl">Concentration</td><td class="mcol"><b>1 audience · 1 format</b></td><td class="gcol"><b>1 message · 3 of 97 ads live</b></td></tr>
+        <tr><td class="lbl">Key risk</td><td class="mcol"><b>Audience exhaustion</b></td><td class="gcol"><b>Single-narrative + 94 dead ads</b></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="blk">
+    <div class="kicker">02 · Cross-channel findings</div>
+    <div class="h2">Six findings, evidence on both sides</div>
+    <div class="sub">Each finding is triangulated across Google delivery data, Meta delivery data, and the audience study — with a single recommended action.</div>
+    <div class="tablecard"><table>
+      <thead><tr><th>Finding</th><th>Google evidence</th><th>Meta evidence</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td><b class="cname">The winning message converts</b></td><td>S$77.7K value · 553 conv</td><td>S$0.98 / LPV on warm pool</td><td><span class="act amp">Amplify</span></td></tr>
+        <tr><td><b class="cname">Strongest narratives untested in paid</b></td><td>0 headline coverage of top story (4,615 eng)</td><td>1 static message family</td><td><span class="act new">New creative</span></td></tr>
+        <tr><td><b class="cname">Over-concentrated channel</b></td><td>3 of 97 ads live · 1 message</td><td>1 audience · 1 format · freq 17.3</td><td><span class="act new">Diversify</span></td></tr>
+        <tr><td><b class="cname">Efficiency is flattered</b></td><td>78.6&#215; ROAS = brand terms</td><td>S$0.98 = warm retargeting</td><td><span class="act inc">Judge incremental</span></td></tr>
+        <tr><td><b class="cname">Delivery &amp; measurement broken</b></td><td>94 ads · 0 impressions (90d)</td><td>Server events (CAPI) dark since 2022</td><td><span class="act ops">Ops fix</span></td></tr>
+        <tr><td><b class="cname">Untapped whitespace</b></td><td>No campaign for community story</td><td>Broad prospecting never tested</td><td><span class="act mon">Monitor / test</span></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="blk">
+    <div class="recwrap">
+      <div class="rh"><h3>Portfolio recommendations</h3><div class="rhs">Where to point paid media next quarter</div></div>
+      <div class="phase">Protect &amp; fix</div>
+      <div class="recs">
+        <div class="rec"><div class="rt">1 · Protect what works</div><div class="rd">Keep funding the converting promo on Google and the warm-audience retargeting on Meta — both are validated. <b>Amplify, don't cut.</b></div><span class="kpi-tie">Guards ▸ S$77.7K value · S$0.98/LPV</span></div>
+        <div class="rec b2"><div class="rt">2 · Fix the plumbing</div><div class="rd">Restart the <b>non-serving Google campaign</b> (94 ads, 0 impressions) and re-enable <b>Meta server-side conversions</b> so the funnel is measurable past the click.</div><span class="kpi-tie">Fixes ▸ 94 dead ads · CAPI dark</span></div>
+      </div>
+      <div class="phase">Grow beyond the harvest</div>
+      <div class="recs">
+        <div class="rec b3"><div class="rt">3 · Take proven stories into paid</div><div class="rd">The audience's highest-engagement narratives have <b>zero paid coverage</b>. Ship 3 new search concepts and new Meta formats (video/UGC) built on them.</div><span class="kpi-tie">Moves ▸ narrative coverage on both</span></div>
+        <div class="rec b4"><div class="rt">4 · Diversify the base</div><div class="rd">Reduce single points of failure — <b>more narratives, more formats, a second demand-gen channel</b> — so neither platform's CPM, policy, or one message can sink acquisition.</div><span class="kpi-tie">Cuts ▸ concentration risk (both critical)</span></div>
+      </div>
+    </div>
+  </section>
+
+</div></div>
+
+
+<!-- ============ META PANEL ============ -->
+<div class="panel" id="p-meta"><div class="wrap">
+
+  <section class="hero">
+    <div class="eyebrow">Meta Ads · Executive summary · 7-day</div>
+    <h1>Efficient on the surface — capped underneath.</h1>
+    <p class="lead">Over the last seven days Proctor's Meta retargeting reached <b style="color:#fff">849 people</b> and delivered <b style="color:#fff">35 landing-page views at S$0.98 each</b> — healthy unit economics. But those costs are held up by showing a tiny warm audience the same static ads <b style="color:#fff">17 times over</b>. Frequency is still climbing, every delivered creative is now fatigued, and 100% of spend sits on one channel, one format and one audience.</p>
+    <div class="period">Reporting window: 30 Jun – 6 Jul 2026 &nbsp;·&nbsp; 1 active campaign &nbsp;·&nbsp; modelled on real Meta account data</div>
+    <div class="herogrid">
+      <div class="scorewrap">
+        <div class="ring">
+          <svg width="120" height="120" viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="48" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="11"/>
+            <circle cx="60" cy="60" r="48" fill="none" stroke="#EB1700" stroke-width="11" stroke-linecap="round" stroke-dasharray="301.6" stroke-dashoffset="165.9"/>
+          </svg>
+          <div class="val"><span class="num">45</span><span class="den">/ 100</span><span class="cap">Health</span></div>
+        </div>
+        <div class="verdicts">
+          <div class="vpill"><span class="tag crit">Critical</span> Audience exhaustion — frequency 17.3</div>
+          <div class="vpill"><span class="tag warn">High</span> Creative fatigue across the live library</div>
+          <div class="vpill"><span class="tag crit">Critical</span> Single-channel concentration (diversity 35/100)</div>
+          <div class="vpill"><span class="tag ok">Healthy</span> Unit cost S$0.98 / landing-page view</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk">
+    <div class="kicker">01 · The week in numbers</div>
+    <div class="h2">Overall weekly performance</div>
+    <div class="sub">Blended delivery for Proctor's active Meta campaign, 30 Jun – 6 Jul 2026. Spend, CPM and cost-per-result are healthy in isolation; frequency and reach are the tells.</div>
+    <div class="kpis">
+      <div class="kpi"><div class="k-l">Spend</div><div class="k-v">S$34.46</div><div class="k-n">S$5/day budget</div></div>
+      <div class="kpi"><div class="k-l">Impressions</div><div class="k-v">14,667</div><div class="k-n">served this week</div></div>
+      <div class="kpi"><div class="k-l">Reach</div><div class="k-v">849</div><div class="k-n">Accounts Center accounts</div></div>
+      <div class="kpi flag"><div class="k-l">Frequency</div><div class="k-v">17.3</div><div class="k-n"><span class="up">&#9650;</span> exposures per person</div></div>
+      <div class="kpi"><div class="k-l">Landing-page views</div><div class="k-v">35</div><div class="k-n">primary result</div></div>
+      <div class="kpi"><div class="k-l">Link clicks</div><div class="k-v">91</div><div class="k-n">CTR 0.70%</div></div>
+      <div class="kpi"><div class="k-l">CPM</div><div class="k-v">S$2.35</div><div class="k-n"><span class="good">low</span> — warm pool</div></div>
+      <div class="kpi"><div class="k-l">CPC</div><div class="k-v">S$0.34</div><div class="k-n">per link click</div></div>
+      <div class="kpi"><div class="k-l">Cost / LPV</div><div class="k-v">S$0.98</div><div class="k-n"><span class="good">efficient</span></div></div>
+      <div class="kpi"><div class="k-l">Cost / 1k reach</div><div class="k-v">S$40.6</div><div class="k-n">reach getting pricey</div></div>
+    </div>
+  </section>
+
+  <section class="blk">
+    <div class="kicker">02 · Conversion funnel</div>
+    <div class="h2">From impression to landing page</div>
+    <div class="sub">The click-to-landing-page step is strong (a warm audience converts), but the top of funnel is starved — 14,667 impressions concentrate on the same 849 people, and there is no measured stage beyond the landing page.</div>
+    <div class="funnelcard">
+      <div class="funnel">
+        <div class="stage s1"><div class="bar"><span class="b-l">Impressions</span><span class="b-v">14,667</span></div><div class="meta">to <b>849</b> unique people</div></div>
+        <div class="conv"><span class="arw">&#9660;</span><span class="rate">Impression &#8594; link click &nbsp;<b>0.62%</b></span></div>
+        <div class="stage s2"><div class="bar"><span class="b-l">Link clicks</span><span class="b-v">91</span></div><div class="meta">CTR <b>0.70%</b> (all clicks 102)</div></div>
+        <div class="conv"><span class="arw">&#9660;</span><span class="rate">Link click &#8594; landing-page view &nbsp;<b>38.5%</b></span></div>
+        <div class="stage s3"><div class="bar"><span class="b-l">Landing-page views</span><span class="b-v">35</span></div><div class="meta">S$0.98 each</div></div>
+        <div class="conv"><span class="arw">&#9660;</span><span class="rate">Landing page &#8594; lead / conversion &nbsp;<b style="color:var(--soft)">not tracked</b></span></div>
+        <div class="stage s4"><div class="bar"><span class="b-l">Lead / enrolment</span><span class="b-v">&#8212; n/a</span></div><div class="meta">no server-side signal</div></div>
+      </div>
+      <div class="fn-note"><span class="dotmark"></span><div><b style="color:var(--ink)">Measurement gap.</b> The funnel goes dark after the landing-page view. Server-side conversions (CAPI) last fired in 2022 and only browser <i>PageView</i>-type events are live, so Proctor cannot see cost-per-lead or downstream value. Widths illustrative; conversion rates actual.</div></div>
+    </div>
+  </section>
+
+  <section class="blk">
+    <div class="kicker">03 · What the four audits found</div>
+    <div class="h2">Key findings across the frameworks</div>
+    <div class="sub">One account read through four lenses — a full audit, the Breakdown-Effect analysis, Meta's creative-fatigue model, and the content-diversity rubric.</div>
+    <div class="findings">
+      <div class="fcard r">
+        <div class="top"><div><div class="name acc-red">Full audit</div><div class="title">Structure &amp; delivery</div></div><div class="badge b-red">45 / 100</div></div>
+        <ul>
+          <li><b>Audience exhaustion.</b> 17.3 exposures per person in a week against an ~849-person pool.</li>
+          <li><b>Self-overlap.</b> Three ad sets on the same list, differing only by placement — ~37% overlap.</li>
+          <li><b>One dead placement.</b> The Square / right-column set spent S$0.00 (33 impressions).</li>
+          <li><b>Early mis-allocation.</b> The best creative got &lt;S$1.10; the weakest absorbed the most budget.</li>
+        </ul>
+      </div>
+      <div class="fcard b">
+        <div class="top"><div><div class="name acc-blue">Ads analyzer</div><div class="title">The Breakdown Effect</div></div><div class="badge b-blue">Read with care</div></div>
+        <ul>
+          <li><b>Averages mislead.</b> Blended S$0.98/LPV &amp; S$2.35 CPM are warm-pool artefacts, not scale signals.</li>
+          <li><b>Broken down, it splits.</b> Feed carries results at <b>S$0.84/LPV</b>; Stories drags at <b>S$1.24/LPV</b>.</li>
+          <li><b>Don't chase the cheap segment.</b> Shifting all budget to Feed won't hold cost once 849 people saturate.</li>
+        </ul>
+      </div>
+      <div class="fcard g">
+        <div class="top"><div><div class="name acc-gold">Creative fatigue</div><div class="title">Library is burning out</div></div><div class="badge b-gold">High · &gt;0.35</div></div>
+        <ul>
+          <li><b>Every delivered creative is fatigued.</b> Fatigue Level &gt; 0.35 on all six with real spend (Meta's 1&#8722;(N+1)^&#8722;0.4 model).</li>
+          <li><b>Top spender worst hit.</b> Concept 6 at frequency 8.4 &#8594; <b>0.59 fatigue</b> and the highest cost/LPV.</li>
+          <li><b>Similarity cluster.</b> 10 ideas, all static, one visual system — clustered as one creative, diluting test signal.</li>
+        </ul>
+      </div>
+      <div class="fcard m">
+        <div class="top"><div><div class="name acc-mint">Content diversity</div><div class="title">Dangerously concentrated</div></div><div class="badge b-mint">35 / 100</div></div>
+        <ul>
+          <li><b>One channel.</b> 100% of investment on Meta — concentration risk <b>CRITICAL</b>.</li>
+          <li><b>One format.</b> Static image only (Format Diversity 25) — no video, carousel or UGC.</li>
+          <li><b>Ideas stretched thin.</b> Creative ratio 33% (10 concepts across 30 placements); ~2 pillars.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk">
+    <div class="kicker">04 · Creative performance &amp; fatigue</div>
+    <div class="h2">Which creatives are working</div>
+    <div class="sub">Creatives with meaningful delivery, ranked by spend. Fatigue Level is Meta's official model applied to each creative's frequency.</div>
+    <div class="tablecard"><table>
+      <thead><tr><th>Creative concept</th><th>Format</th><th class="r">Spend</th><th class="r">Freq</th><th class="r">CTR</th><th class="r">LPV</th><th class="r">Cost/LPV</th><th class="r">Fatigue</th><th class="r">Status</th></tr></thead>
+      <tbody>
+        <tr class="win"><td><span class="cname">Concept 1 · Before / After</span></td><td class="fmt">Static · Feed</td><td class="r">S$1.04</td><td class="r">2.6</td><td class="r"><b>2.54%</b></td><td class="r">6</td><td class="r"><b>S$0.17</b></td><td class="r"><span class="chip hi">0.40</span></td><td class="r"><span class="st on">Live</span></td></tr>
+        <tr><td><span class="cname">Concept 7 · Move first</span></td><td class="fmt">Static · Feed</td><td class="r">S$8.82</td><td class="r">6.4</td><td class="r">0.84%</td><td class="r">8</td><td class="r">S$1.10</td><td class="r"><span class="chip hi">0.55</span></td><td class="r"><span class="st on">Live</span></td></tr>
+        <tr class="paused"><td><span class="cname">Concept 4 · See the gap</span></td><td class="fmt">Static · Feed</td><td class="r">S$6.43</td><td class="r">5.4</td><td class="r">0.79%</td><td class="r">5</td><td class="r">S$1.29</td><td class="r"><span class="chip hi">0.53</span></td><td class="r"><span class="st off">Paused</span></td></tr>
+        <tr class="paused"><td><span class="cname">Concept 6 · Capitalize on gaps</span></td><td class="fmt">Static · Story</td><td class="r">S$13.52</td><td class="r">8.4</td><td class="r"><b style="color:var(--red)">0.42%</b></td><td class="r">10</td><td class="r"><b style="color:var(--red)">S$1.35</b></td><td class="r"><span class="chip hi">0.59</span></td><td class="r"><span class="st off">Paused</span></td></tr>
+        <tr class="paused"><td><span class="cname">Concept 2 · Same ad as category</span></td><td class="fmt">Static · Feed</td><td class="r">S$1.16</td><td class="r">2.1</td><td class="r">0.88%</td><td class="r">1</td><td class="r">S$1.16</td><td class="r"><span class="chip hi">0.36</span></td><td class="r"><span class="st off">Paused</span></td></tr>
+        <tr><td><span class="cname">Concept 7 · Move first</span></td><td class="fmt">Static · Story</td><td class="r">S$1.38</td><td class="r">2.8</td><td class="r">0.35%</td><td class="r">1</td><td class="r">S$1.38</td><td class="r"><span class="chip hi">0.41</span></td><td class="r"><span class="st on">Live</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="tnote">The remaining ~24 creatives each spent under S$0.65 with negligible delivery and are excluded as untested. Fatigue is Meta-official; the differentiation read is a constructed framework.</div>
+  </section>
+
+  <section class="blk">
+    <div class="kicker">05 · Placement breakdown</div>
+    <div class="h2">Where the money went</div>
+    <div class="sub">Three ad sets, same audience, split by placement. Feed does the work; Stories is dearer; the Square set is inert.</div>
+    <div class="split">
+      <div class="scard"><h4>Feed 4:5 + Audience Network</h4><div class="plc">Best efficiency</div>
+        <div class="srow"><span>Spend</span><b>S$18.40</b></div><div class="srow"><span>Landing-page views</span><b>22</b></div><div class="srow"><span>Cost / LPV</span><b style="color:#067a5c">S$0.84</b></div><div class="srow"><span>Frequency</span><b>12.0</b></div>
+        <div class="track"><i style="width:100%;background:var(--mint)"></i></div></div>
+      <div class="scard"><h4>Stories &amp; Reels 9:16</h4><div class="plc">Higher cost, lower CTR</div>
+        <div class="srow"><span>Spend</span><b>S$16.06</b></div><div class="srow"><span>Landing-page views</span><b>13</b></div><div class="srow"><span>Cost / LPV</span><b style="color:#9a7900">S$1.24</b></div><div class="srow"><span>Frequency</span><b>9.9</b></div>
+        <div class="track"><i style="width:68%;background:var(--gold)"></i></div></div>
+      <div class="scard"><h4>Square 1:1 · right column + Messenger</h4><div class="plc dead">Not delivering</div>
+        <div class="srow"><span>Spend</span><b>S$0.00</b></div><div class="srow"><span>Landing-page views</span><b>0</b></div><div class="srow"><span>Cost / LPV</span><b>&#8212;</b></div><div class="srow"><span>Impressions</span><b>33</b></div>
+        <div class="track"><i style="width:2%;background:var(--red)"></i></div></div>
+    </div>
+  </section>
+
+  <section class="blk">
+    <div class="recwrap">
+      <div class="rh"><h3>Meta recommendations — next 2–4 weeks</h3><div class="rhs">Ordered by impact · each tied to a metric</div></div>
+      <div class="phase">Now — fix the ceiling</div>
+      <div class="recs">
+        <div class="rec"><div class="rt">1 · Break the audience ceiling</div><div class="rd">Add a prospecting layer — a lookalike of converters plus the CRM list — so delivery isn't trapped on ~849 people. <b>Target frequency below 4.</b></div><span class="kpi-tie">Moves ▸ Frequency 17.3 &#8594; &lt;4</span></div>
+        <div class="rec"><div class="rt">2 · Consolidate &amp; kill dead placement</div><div class="rd">Collapse the three placement-split ad sets into <b>one ad set with Advantage+ placements</b>; retire the S$0 Square set.</div><span class="kpi-tie">Moves ▸ Overlap 37% &#8594; ~0</span></div>
+      </div>
+      <div class="phase">Next — refresh &amp; measure</div>
+      <div class="recs">
+        <div class="rec b2"><div class="rt">3 · Rebuild creative, add formats</div><div class="rd">Keep the winner (S$0.17/LPV), retire the fatigued static set, add <b>video and UGC</b> to break the similarity cluster.</div><span class="kpi-tie">Moves ▸ Fatigue &gt;0.35 · Format 25</span></div>
+        <div class="rec b3"><div class="rt">4 · Reconnect the funnel</div><div class="rd">Re-enable CAPI and a real down-funnel event so Proctor can optimise to <b>cost-per-lead</b>, then move off Traffic.</div><span class="kpi-tie">Moves ▸ Visibility past LPV</span></div>
+      </div>
+    </div>
+  </section>
+
+</div></div>
+
+
+<!-- ============ GOOGLE PANEL ============ -->
+<div class="panel" id="p-google"><div class="wrap">
+
+  <section class="hero">
+    <div class="eyebrow">Google Ads · Executive summary · 90-day</div>
+    <h1>Paid search is a single-narrative channel.</h1>
+    <p class="lead">Over 90 days Proctor's search delivered <b style="color:#fff">S$77.7K in conversion value on S$989 of spend</b> — a ~78.6&#215; return. But every conversion traces to <b style="color:#fff">one promotional message</b> on brand terms, only <b style="color:#fff">3 of 97 enabled ads</b> converted, and <b style="color:#fff">94 ads never served a single impression</b>. It's a high return on a very narrow, brand-fed base.</p>
+    <div class="period">Reporting window: 6 Apr – 4 Jul 2026 (90 days) &nbsp;·&nbsp; 97 enabled ads &nbsp;·&nbsp; modelled on real Google Ads data + audience study</div>
+    <div class="herogrid">
+      <div class="scorewrap">
+        <div class="ring">
+          <svg width="120" height="120" viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="48" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="11"/>
+            <circle cx="60" cy="60" r="48" fill="none" stroke="#00D19E" stroke-width="11" stroke-linecap="round" stroke-dasharray="301.6" stroke-dashoffset="174.9"/>
+          </svg>
+          <div class="val"><span class="num">42</span><span class="den">/ 100</span><span class="cap">Structure</span></div>
+        </div>
+        <div class="verdicts">
+          <div class="vpill"><span class="tag ok">Strong</span> ~78.6&#215; ROAS on the winning message</div>
+          <div class="vpill"><span class="tag warn">Inflated</span> Return is brand-term traffic, not net-new demand</div>
+          <div class="vpill"><span class="tag crit">Critical</span> 1 message · 3 of 97 ads converting</div>
+          <div class="vpill"><span class="tag crit">Broken</span> 94 enabled ads served 0 impressions</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk">
+    <div class="kicker">01 · The quarter in numbers</div>
+    <div class="h2">Overall search performance</div>
+    <div class="sub">Blended paid-search delivery, 6 Apr – 4 Jul 2026. The headline efficiency is real but narrow — it rests on brand-term demand and a promotion that ended 5 July.</div>
+    <div class="kpis">
+      <div class="kpi hot"><div class="k-l">Conversion value</div><div class="k-v">S$77.7K</div><div class="k-n">from paid search</div></div>
+      <div class="kpi"><div class="k-l">Spend</div><div class="k-v">S$989</div><div class="k-n">90-day total</div></div>
+      <div class="kpi hot"><div class="k-l">ROAS</div><div class="k-v">78.6&#215;</div><div class="k-n">brand-inflated</div></div>
+      <div class="kpi"><div class="k-l">Conversions</div><div class="k-v">553</div><div class="k-n">S$140 avg value</div></div>
+      <div class="kpi"><div class="k-l">Clicks</div><div class="k-v">11,855</div><div class="k-n">CTR 53.9%</div></div>
+      <div class="kpi"><div class="k-l">Impressions</div><div class="k-v">21,979</div><div class="k-n">on winning ads</div></div>
+      <div class="kpi"><div class="k-l">Enabled ads</div><div class="k-v">97</div><div class="k-n">in the window</div></div>
+      <div class="kpi flag"><div class="k-l">Ads converting</div><div class="k-v">3</div><div class="k-n">all one campaign</div></div>
+      <div class="kpi flag"><div class="k-l">Ads never served</div><div class="k-v">94</div><div class="k-n"><span class="up">&#9650;</span> 0 impressions</div></div>
+      <div class="kpi flag"><div class="k-l">Creative messages</div><div class="k-v">1</div><div class="k-n">one promo RSA</div></div>
+    </div>
+  </section>
+
+  <section class="blk">
+    <div class="kicker">02 · Conversion funnel</div>
+    <div class="h2">From impression to value</div>
+    <div class="sub">Brand-term search converts efficiently top to bottom — but this is demand capture, not creation: people already searching the brand name, served one discount message.</div>
+    <div class="funnelcard">
+      <div class="funnel">
+        <div class="stage s1"><div class="bar"><span class="b-l">Impressions</span><span class="b-v">21,979</span></div><div class="meta">brand-term searches</div></div>
+        <div class="conv"><span class="arw">&#9660;</span><span class="rate">Impression &#8594; click &nbsp;<b>53.9%</b> <span style="color:var(--soft)">(brand intent)</span></span></div>
+        <div class="stage s2"><div class="bar"><span class="b-l">Clicks</span><span class="b-v">11,855</span></div><div class="meta">cost <b>S$989</b></div></div>
+        <div class="conv"><span class="arw">&#9660;</span><span class="rate">Click &#8594; conversion &nbsp;<b>4.67%</b></span></div>
+        <div class="stage s3"><div class="bar"><span class="b-l">Conversions</span><span class="b-v">553</span></div><div class="meta">across 3 ad groups</div></div>
+        <div class="conv"><span class="arw">&#9660;</span><span class="rate">Conversion value &nbsp;<b>S$77,728</b> &nbsp;·&nbsp; 78.6&#215; ROAS</span></div>
+        <div class="stage s4"><div class="bar" style="background:var(--mint);color:#083a2c;width:34%"><span class="b-l">Value</span><span class="b-v">S$77.7K</span></div><div class="meta">S$140 / conversion</div></div>
+      </div>
+      <div class="fn-note"><span class="dotmark"></span><div><b style="color:var(--ink)">Read the ROAS with care.</b> A 53.9% CTR is the signature of branded search — these are people already looking for the brand. The return proves the message converts, but it does not measure demand the channel <i>created</i>. Widths illustrative; rates actual.</div></div>
+    </div>
+  </section>
+
+  <section class="blk">
+    <div class="kicker">03 · The three winners</div>
+    <div class="h2">Same ad, three ad groups</div>
+    <div class="sub">All conversions came from one brand campaign running a single promotional RSA across three ad groups. Every other enabled ad contributed nothing.</div>
+    <div class="tablecard"><table>
+      <thead><tr><th>Ad group</th><th class="r">Impr.</th><th class="r">Clicks</th><th class="r">CTR</th><th class="r">Cost</th><th class="r">Conv.</th><th class="r">Conv. value</th></tr></thead>
+      <tbody>
+        <tr class="win"><td><span class="cname">Brand — core</span></td><td class="r">12,801</td><td class="r">7,307</td><td class="r">57.1%</td><td class="r">S$599.60</td><td class="r">344.3</td><td class="r"><b>S$46,494</b></td></tr>
+        <tr><td><span class="cname">Brand — region (SG)</span></td><td class="r">7,360</td><td class="r">4,049</td><td class="r">55.0%</td><td class="r">S$322.76</td><td class="r">191.0</td><td class="r">S$27,224</td></tr>
+        <tr><td><span class="cname">Brand — promotion</span></td><td class="r">1,818</td><td class="r">499</td><td class="r">27.5%</td><td class="r">S$66.89</td><td class="r">18.0</td><td class="r">S$4,011</td></tr>
+        <tr class="tot"><td>Total</td><td class="r">21,979</td><td class="r">11,855</td><td class="r">53.9%</td><td class="r">S$989.24</td><td class="r">553.3</td><td class="r">S$77,728</td></tr>
+      </tbody>
+    </table></div>
+    <div class="tnote">The shared creative is a single promotional-offer RSA (discount + free-shipping + brand-breadth) pointing to a promo landing page tied to an offer that ended 5 July.</div>
+  </section>
+
+  <section class="blk">
+    <div class="kicker">04 · Two structural gaps</div>
+    <div class="h2">What the audit and the audience study surfaced</div>
+    <div class="sub">Google delivery data flagged a delivery failure; the audience study flagged a coverage failure — the paid message is aimed at the smallest segment.</div>
+    <div class="findings">
+      <div class="fcard r">
+        <div class="top"><div><div class="name acc-red">Delivery audit</div><div class="title">94 ads never served</div></div><div class="badge b-red">Ops fix</div></div>
+        <ul>
+          <li><b>Zero delivery.</b> 94 of 97 enabled ads served 0 impressions, 0 clicks, 0 cost across the full 90 days.</li>
+          <li><b>Mostly one campaign.</b> An experiment (Target-CPA) campaign holds 8 enabled ads that never ran at all.</li>
+          <li><b>Not a creative problem.</b> No new copy can fix a campaign that isn't serving — budget, bids or targeting.</li>
+        </ul>
+      </div>
+      <div class="fcard b">
+        <div class="top"><div><div class="name acc-blue">Audience coverage</div><div class="title">Aimed at the smallest segment</div></div><div class="badge b-blue">Whitespace</div></div>
+        <ul>
+          <li><b>Wrong-sized target.</b> The live message speaks to the <b>smallest</b> of three audience segments (13%); the <b>largest</b> (55%) has never seen an ad written for it.</li>
+          <li><b>Top story uncovered.</b> The highest-engagement narrative (4,615 engagement) has <b>zero</b> paid headline coverage.</li>
+          <li><b>Winning on a weaker signal.</b> Every conversion is won on the audience's weaker organic tension — it works, but leaves the strongest stories on the table.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk">
+    <div class="kicker">05 · Proposed creative</div>
+    <div class="h2">Three new search concepts from the audience study</div>
+    <div class="sub">Each concept is an audience-first chain — segment &#8594; narrative &#8594; angle &#8594; story — targeting engagement the current promo message ignores. Recommended for account-team review, not auto-launched.</div>
+    <div class="rsas">
+      <div class="rsa">
+        <div class="rn">Concept A</div><div class="rt">Identity &amp; lifestyle</div>
+        <div class="chain"><b>Segment:</b> largest audience (55%)<br><b>Narrative:</b> identity &amp; lifestyle<br><b>Angle:</b> parental / user identity</div>
+        <div class="rwhy">Targets the biggest segment with the single highest-engagement story in the brand's own content — for the first time in paid search.</div>
+      </div>
+      <div class="rsa b2">
+        <div class="rn">Concept B</div><div class="rt">Value beyond price</div>
+        <div class="chain"><b>Segment:</b> the deal-seeker<br><b>Narrative:</b> affordable quality<br><b>Angle:</b> value for money</div>
+        <div class="rwhy">Built on the best per-post engagement figure of any brand in the study — keeps the value-seeker but moves past raw %-off framing.</div>
+      </div>
+      <div class="rsa b3">
+        <div class="rn">Concept C</div><div class="rt">Simplicity / all-in-one</div>
+        <div class="chain"><b>Segment:</b> largest audience<br><b>Narrative:</b> everything in one place<br><b>Angle:</b> reduce cognitive load</div>
+        <div class="rwhy">Sidesteps the saturated discount war (where rivals out-post 8&#215;) and competes on convenience — where the brand already wins on quality (37.8 vs 10.2 per post).</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk">
+    <div class="recwrap">
+      <div class="rh"><h3>Google recommendations</h3><div class="rhs">Read-only analysis — nothing was changed in the account</div></div>
+      <div class="phase">Protect &amp; fix</div>
+      <div class="recs">
+        <div class="rec"><div class="rt">1 · Protect the winning budget line</div><div class="rd">The promo message is validated on both channels — <b>amplify, don't replace</b>. Refresh the offer/landing page now that the July promotion has ended.</div><span class="kpi-tie">Guards ▸ S$77.7K value</span></div>
+        <div class="rec b2"><div class="rt">2 · Investigate the non-serving campaign</div><div class="rd">8 enabled ads, <b>0 impressions in 90 days</b> — a budget, bid or targeting fault. Fix delivery before writing any new copy for it.</div><span class="kpi-tie">Fixes ▸ 94 dead ads</span></div>
+      </div>
+      <div class="phase">Grow coverage</div>
+      <div class="recs">
+        <div class="rec b3"><div class="rt">3 · Launch the three new RSAs</div><div class="rd">Ship Concepts A–C to cover the <b>largest segment and the top narratives</b> the current promo ignores. Full audit trail per creative.</div><span class="kpi-tie">Moves ▸ 1 message &#8594; 4</span></div>
+        <div class="rec b4"><div class="rt">4 · Move beyond brand terms</div><div class="rd">Test non-brand / category search so the channel <b>creates demand</b>, not just harvests people already searching the name.</div><span class="kpi-tie">Moves ▸ ROAS quality</span></div>
+      </div>
+    </div>
+  </section>
+
+</div></div>
+
+
+<!-- Footer -->
+<footer><div class="wrap">
+  <div class="foot-top">
+    <div class="wordmark">CONSTRUCT<span class="dev"><span class="dot"></span></span>R<span class="chev">&#8250;</span><span class="grp">GROUP</span></div>
+    <div style="text-align:right;font-size:12px;color:var(--navybody)">
+      Constructor Tech · <b style="color:#fff">Proctor</b><br>Paid Media Review · Meta (7d) + Google (90d) · Jul 2026
+    </div>
+  </div>
+  <div class="method">
+    <b>Methodology &amp; caveats.</b> Figures are pulled from live Meta Ads and Google Ads accounts and modelled here for Constructor Tech's Proctor as an illustrative case — the metrics are real, the product framing is not. Windows differ by channel (Meta 7-day, Google 90-day) and are shown in parallel, never summed. The <b>Creative Fatigue Level</b> uses Meta's official 1&#8722;(N+1)<sup>&#8722;0.4</sup> model; the <b>content-diversity</b> and <b>channel-health</b> scores are constructed frameworks for consistent, comparable ranking — not official platform metrics. Google ROAS is reported as-is and flagged as brand-term inflated. All monetary values are in <b>SGD</b>. Google analysis was read-only — nothing was created, edited or paused.
+  </div>
+  <div class="foot-legal">
+    <span>Constructing the future</span><span>·</span><span>Constructor Knowledge · Constructor Capital · Constructor Tech</span><span>·</span><span>Confidential — internal review</span>
+  </div>
+</div></footer>
+
+<script>
+  document.querySelectorAll('.tabbtn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.tabbtn').forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      var el = document.getElementById(btn.getAttribute('data-target'));
+      if(el){ el.classList.add('active'); }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+</script>
+
+</body>
+</html>
